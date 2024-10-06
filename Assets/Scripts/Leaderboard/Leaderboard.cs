@@ -16,24 +16,27 @@ public partial class Leaderboard : Singleton<Leaderboard>
     [SerializeField]
     private GeneralEvent _playerAdded, _playerScoreRetrieved, _playerScoreAdded;
 
+    [SerializeField]
+    private bool _callApi;
+
     protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);
-
         _token = LeaderboardConfiguration.Token;
-
         Debug.Log("Leaderboard loaded");
     }
 
     public async void OnAddPlayerScoreEvent(EventArgs eventArgs)
     {
+        Debug.Log("OnAddPlayerScoreEvent");
         AddPlayerScoreEventArgs playerScoreDataAddEvent = (AddPlayerScoreEventArgs)eventArgs;
         await PostPlayerScore(playerScoreDataAddEvent.PlayerScoreData);
     }
 
     public async void OnAddPlayerEvent(EventArgs eventArgs)
     {
+        Debug.Log("OnAddPlayerEvent");
         AddPlayerEventArgs playerdataAddEvent = (AddPlayerEventArgs)eventArgs;
 
         // check if player aready exists
@@ -53,9 +56,11 @@ public partial class Leaderboard : Singleton<Leaderboard>
 
     public async void OnRetrievePlayerScores(EventArgs eventArgs)
     {
+        Debug.Log("OnRetrievePlayerScores");
         RetrievePlayerScoresEventArgs retrievePlayerScoresEventArgs = (RetrievePlayerScoresEventArgs)eventArgs;
         PlayerScoreDataList playerScores = await GetScores();
         _playerScoreRetrieved.Raise(new PlayerScoresRetrievedEventArgs(retrievePlayerScoresEventArgs.SourceGameObject, playerScores));
+
     }
 
     public async Task<PlayerDataList> GetPlayers()
@@ -70,18 +75,19 @@ public partial class Leaderboard : Singleton<Leaderboard>
 
     public async Task PostNewPlayer(PlayerData playerData)
     {
+        Debug.Log("Posting new player");
         var playerdataAddEventSanitize = new PlayerData
         {
             Username = playerData.Username.Replace("\u200B", "")
         };
+
         await PostData(_postPlayerEndpoint, playerdataAddEventSanitize);
+        _playerAdded.Raise(new PlayerAddedEventArgs(true));
     }
 
     public async Task PostPlayerScore(PlayerScoreData playerScoreData)
     {
-
-        //check if username contains zero width space
-
+        Debug.Log("Posting player score");
         var playerScoreSanitize = new PlayerScoreData
         {
             Username = playerScoreData.Username.Replace("\u200B", ""),
@@ -97,18 +103,28 @@ public partial class Leaderboard : Singleton<Leaderboard>
 
         string jsonData = JsonConvert.SerializeObject(data);
 
-        using (UnityWebRequest request = UnityWebRequest.Post(endpoint, jsonData, "application/json"))
+        if (!_callApi)
         {
-            request.SetRequestHeader("Authorization", _token);
+            throw new Exception("API calls are disabled");
+        }
 
-            await request.SendWebRequest();
-
-            if (request.result != UnityWebRequest.Result.Success)
+        try
+        {
+            using (UnityWebRequest request = UnityWebRequest.Post(endpoint, jsonData, "application/json"))
             {
-                Debug.LogError("Error posting data: " + request.error);
-            }
+                request.SetRequestHeader("Authorization", _token);
 
-            _playerAdded.Raise(new PlayerAddedEventArgs(true));
+                await request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log("Error posting data: " + request.error);
+                    throw new Exception("Error posting data: " + request.error);
+                }
+            }
+        } catch 
+        {
+            Debug.Log("Error posting data");
         }
     }
 
@@ -116,18 +132,30 @@ public partial class Leaderboard : Singleton<Leaderboard>
     {
         Debug.Log("Getting data from " + endpoint);
 
-        using (UnityWebRequest request = UnityWebRequest.Get(endpoint))
+        if (!_callApi)
         {
-            request.SetRequestHeader("Authorization", _token);
+            throw new Exception("API calls are disabled");
+        }
 
-            await request.SendWebRequest();
-
-            if (request.result != UnityWebRequest.Result.Success)
+        try
+        {
+            using (UnityWebRequest request = UnityWebRequest.Get(endpoint))
             {
-                Debug.LogError("Error getting data: " + request.error);
-            }
+                request.SetRequestHeader("Authorization", _token);
 
-            return JsonConvert.DeserializeObject<T>(request.downloadHandler.text);
+                await request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.Log("Error getting data: " + request.error);
+                    throw new Exception("Error posting data: " + request.error);
+                }
+
+                return JsonConvert.DeserializeObject<T>(request.downloadHandler.text);
+            }
+        } catch
+        {
+            return default; 
         }
     }
 }

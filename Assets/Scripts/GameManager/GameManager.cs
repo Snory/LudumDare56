@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -43,6 +44,11 @@ public class GameManager : MonoBehaviour
         QuitGame();
     }
 
+    public void OnWin()
+    {
+        TransitToState(GameStates.Win);
+    }
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -81,7 +87,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void TransitToState(GameStates newState)
+    private async void TransitToState(GameStates newState)
     {
         _currentGameState = newState;
         switch (_currentGameState)
@@ -94,6 +100,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameStates.Win:
                 Time.timeScale = 0;
+                await WaitForSeconds(1); // wait for 1 second
                 break;
             default:
                 Time.timeScale = 1;
@@ -101,6 +108,17 @@ public class GameManager : MonoBehaviour
         }
 
         GameStateChanged.Raise(new GameStateChangeEventArgs(_currentGameState));
+        Debug.Log($"Game state changed to {_currentGameState}");
+    }
+
+    public async Task WaitForSeconds(float seconds)
+    {
+        float endTime = Time.unscaledTime + seconds;
+
+        while (Time.unscaledTime < endTime)
+        {
+            await Task.Yield();
+        }
     }
 
     private void QuitGame()

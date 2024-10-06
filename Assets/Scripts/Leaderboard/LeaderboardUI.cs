@@ -49,7 +49,7 @@ public class LeaderboardUI : MonoBehaviour
             return;
         }
 
-        var scores = playerScoresRetrievedEventArgs.PlayerScores.PlayerScores.OrderByDescending(s => s.Score).ToList();
+        var scores = playerScoresRetrievedEventArgs.PlayerScores.PlayerScores.OrderBy(s => s.Score).ToList();
 
         for (int i = 0; i < scores.Count; i++)
         {

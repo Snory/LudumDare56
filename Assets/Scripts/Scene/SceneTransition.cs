@@ -46,7 +46,6 @@ public class SceneTransition : MonoBehaviour
 
         while (Time.unscaledTime < endTime)
         {
-            Debug.Log("Waiting for seconds");
             await Task.Yield();
         }
     }

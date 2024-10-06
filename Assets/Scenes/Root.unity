@@ -126,6 +126,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1568371089915396811, guid: cc5734f88d526cb4986ec2d405fde346, type: 3}
+      propertyPath: _callApi
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2983290907142929630, guid: cc5734f88d526cb4986ec2d405fde346, type: 3}
       propertyPath: m_Name
       value: Leaderboard
@@ -234,12 +238,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3505919118416465307, guid: 237e625493baaa54eb7942439d8a6f94, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7060844980282352186}
-    - targetCorrespondingSourceObject: {fileID: 3505919118416465307, guid: 237e625493baaa54eb7942439d8a6f94, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7060844980282352187}
-    - targetCorrespondingSourceObject: {fileID: 3505919118416465307, guid: 237e625493baaa54eb7942439d8a6f94, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7060844980282352188}
   m_SourcePrefab: {fileID: 100100000, guid: 237e625493baaa54eb7942439d8a6f94, type: 3}
 --- !u!1 &7060844980282352184 stripped
 GameObject:
@@ -269,69 +267,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0512967ae9095114184bf02dbbd79004, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 9a41e657b0f715b41b7fbbf99ab08ec4, type: 2}
+  Event: {fileID: 11400000, guid: 60eb18ca9b9ce32428674f420e9c91b0, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7060844980282352185}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnMainMenuLoaded
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &7060844980282352187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7060844980282352184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0512967ae9095114184bf02dbbd79004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: f99c344bb2b99ad4ba6fe22440d3b45b, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7060844980282352185}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnGameOver
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &7060844980282352188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7060844980282352184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0512967ae9095114184bf02dbbd79004, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 59053fb5301916644a1955019840b0a0, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7060844980282352185}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnExitGame
+        m_MethodName: OnWin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

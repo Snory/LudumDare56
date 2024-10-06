@@ -13,7 +13,7 @@ public class NameChooserUI : MonoBehaviour
     [SerializeField]
     private GeneralEvent _addPlayerEvent, _switchSceneEvent;
 
-    private const string _lastUsedNameKey = "LastUsedName";
+    public const string LastUsedName = "LastUsedName";
 
     public void Start()
     {
@@ -40,18 +40,18 @@ public class NameChooserUI : MonoBehaviour
 
     public void StoreLastUsedName(string name)
     {
-        PlayerPrefs.SetString(_lastUsedNameKey, name);
+        PlayerPrefs.SetString(LastUsedName, name);
     }
 
     public string GetLastUsedName()
     {
-        if(!PlayerPrefs.HasKey(_lastUsedNameKey))
+        if(!PlayerPrefs.HasKey(LastUsedName))
         {
             Debug.Log("No last used name found");
             return null;
         }
 
-        return PlayerPrefs.GetString(_lastUsedNameKey);
+        return PlayerPrefs.GetString(LastUsedName);
     }
 
     public void OnPlayerAdded(EventArgs eventArgs)

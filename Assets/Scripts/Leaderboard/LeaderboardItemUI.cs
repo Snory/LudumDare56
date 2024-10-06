@@ -14,6 +14,10 @@ public class LeaderboardItemUI : MonoBehaviour
     {
         _position.text = position.ToString();
         _player.text = playerName;
-        _score.text = score.ToString();
+
+        float minutes = Mathf.FloorToInt(score / 60);
+        float seconds = Mathf.FloorToInt(score % 60);
+
+        _score.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }
