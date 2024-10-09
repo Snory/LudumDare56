@@ -1,10 +1,3 @@
-# LudumDare basic template
+# LudumDare 56
 
-## Contains
-
-- General event system via scriptable objects
-  - to trigger an event to which anyone can respond
-  - good for getting rid of the "Singleton" over usage 
-- Scene transitions
-  - Simple scene transition object
-- Basic Leaderboard
+Prototype of 6 dof movement with immediate change in direction.
